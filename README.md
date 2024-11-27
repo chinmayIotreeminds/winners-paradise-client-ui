@@ -1,1 +1,1 @@
-# winners-paradise-client-ui
+# winnersParadiseFrontend

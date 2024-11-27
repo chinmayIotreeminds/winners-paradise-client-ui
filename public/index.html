@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="theme-color" content="#020065" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#020065">
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <title>Algo Achievers</title>
+
+  <style>
+    .gradient-background {
+      background: linear-gradient(to left, #020065, #0400CB);
+      height: 100px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    body {
+      margin-top: 100px;
+      background-color: linear-gradient(to left, #020065, #0400CB);
+    }
+  </style>
+</head>
+
+<body class="gradient-background">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+
+  <script>
+    console.log("Script loaded");
+
+
+
+    try {
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM fully loaded and parsed");
+
+        function isPWA() {
+          console.log("Checking PWA status...");
+          return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+        }
+
+        if (isPWA()) {
+
+          let lastTouchEnd = 0;
+
+          document.addEventListener('touchend', (e) => {
+            const now = new Date().getTime();
+            if (now - lastTouchEnd <= 300) {
+              e.preventDefault();
+            }
+            lastTouchEnd = now;
+          });
+
+          let lastTouchY = 0;
+          let preventPullToRefresh = false;
+
+          const metaViewport = document.querySelector('meta[name="viewport"]');
+          if (metaViewport) {
+            metaViewport.setAttribute("content", "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no");
+          }
+
+          document.addEventListener('gesturestart', (e) => e.preventDefault());
+          document.addEventListener('gesturechange', (e) => e.preventDefault());
+          document.addEventListener('gestureend', (e) => e.preventDefault());
+
+          document.addEventListener('touchmove', function (e) {
+            if (e.touches.length > 1) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+
+
+          window.addEventListener('touchstart', (e) => {
+            if (e.touches.length != 1) return;
+            lastTouchY = e.touches[0].clientY;
+            preventPullToRefresh = window.scrollY === 0;
+          });
+
+          window.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const touchYDelta = touchY - lastTouchY;
+
+            if (preventPullToRefresh && touchYDelta > 0) {
+              e.preventDefault();
+            }
+
+            lastTouchY = touchY;
+          });
+
+        } else {
+          console.log("App is running in a browser, not as a PWA");
+        }
+      });
+    } catch (error) {
+      console.error("Error in script execution:", error);
+    }
+  </script>
+</body>
+
+</html>

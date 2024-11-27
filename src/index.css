@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Monda:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+}
+
+h1 {
+  font-family: "Monda", sans-serif;
+}
+
+p {
+  font-family: "Montserrat", sans-serif;
+}
