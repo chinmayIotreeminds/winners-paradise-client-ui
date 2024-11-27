@@ -135,13 +135,13 @@ const OtpVerification = () => {
                         </div>
                         <div className="mt-5">
                             <button onClick={sendOtp} className="md:w-1/5 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]">Get Otp</button>
-                            <div>
+                            {/* <div>
                                 {!isInstalled && deferredPrompt && (
                                     <button onClick={handleInstallClick} className="mt-10 md:w-1/5 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]">
                                         Install App
                                     </button>
                                 )}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
