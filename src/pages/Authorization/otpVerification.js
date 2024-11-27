@@ -68,21 +68,22 @@ const OtpVerification = () => {
 
     return (
         <>
-            <div className="h-full bg-white ">
-                <div className="h-1/2 bg-gradient-to-l from-[#020065] to-[#0400CB]">
-                    <div className="h-full  flex flex-col justify justify-center items-center">
-                        <img className="w-auto h-1/3 md:mt-5" src={imageLogo}></img>
-                        <div>
-                            <h1 className="text-2xl mt-5 text-white font-semibold">Welcome to</h1>
-                        </div>
-                        <div>
-                            <h1 className="text-4xl p-7 text-white font-bold">Algo Achievers </h1>
-                        </div>
+            <div className="h-screen flex flex-col">
+                {/* Top Half with Gradient */}
+                <div className="h-1/2 bg-gradient-to-l from-[#020065] to-[#0400CB] flex flex-col justify-center items-center">
+                    <img className="w-auto h-1/3 md:mt-5" src={imageLogo} alt="Logo" />
+                    <div>
+                        <h1 className="text-2xl mt-5 text-white font-semibold">Welcome to</h1>
+                    </div>
+                    <div>
+                        <h1 className="text-4xl p-7 text-white font-bold">Algo Achievers </h1>
                     </div>
                 </div>
-                <div className="text-start mt-5 mx-5 rounded-lg" style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}>
-                    <div className="p-5 ">
-                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500px', fontSize: '14px' }}>Select preferred language</p>
+
+                {/* Bottom Half with White Background */}
+                <div className="h-1/2 bg-white">
+                    <div className="text-start mt-5 mx-5 rounded-lg p-4" style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}>
+                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', fontSize: '14px' }}>Select preferred language</p>
                         <FormControl component="fieldset" style={{ marginTop: '16px' }}>
                             <RadioGroup row aria-label="language" name="language-group" defaultValue="English">
                                 <FormControlLabel
@@ -118,21 +119,23 @@ const OtpVerification = () => {
                             </RadioGroup>
                         </FormControl>
                     </div>
-                </div>
-                <div className="text-start mt-5 mx-5 rounded-lg " style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}>
-                    <div className="p-5 ">
-                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500px', fontSize: '14px' }}>Login/Register to continue</p>
+
+                    {/* Login/Register Form */}
+                    <div className="text-start mt-5 mx-5 rounded-lg p-5" style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}>
+                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', fontSize: '14px' }}>Login/Register to continue</p>
                         <div className="md:grid grid-cols-2 mt-3">
                             <TextField
                                 label="Phone Number"
                                 variant="outlined"
                                 size="medium"
                                 fullWidth
+                                value={inputValue}
+                                onChange={handleInputChange}
                             />
                         </div>
                         <div className="mt-5">
-                            <button className="md:w-1/5 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]">Get Otp</button>
-                            <div >
+                            <button onClick={sendOtp} className="md:w-1/5 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]">Get Otp</button>
+                            <div>
                                 {!isInstalled && deferredPrompt && (
                                     <button onClick={handleInstallClick} className="mt-10 md:w-1/5 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]">
                                         Install App
@@ -140,10 +143,9 @@ const OtpVerification = () => {
                                 )}
                             </div>
                         </div>
-                        <div className="mt-10"></div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     );
 };
