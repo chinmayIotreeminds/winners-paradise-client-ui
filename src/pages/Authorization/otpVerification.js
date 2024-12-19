@@ -134,7 +134,7 @@ const OtpVerification = () => {
 
                         {/* Login/Register Form */}
                         <div
-                            className="text-start mt-5 mx-5 rounded-lg p-5 mt-0 lg:mt-10"
+                            className="text-start mt-5 mx-5 rounded-lg p-5 mt-5 lg:mt-10 "
                             style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}
                         >
                             <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', fontSize: '14px' }}>
