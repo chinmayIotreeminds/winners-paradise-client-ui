@@ -13,6 +13,9 @@ import { PwaContext } from "../../context/PwaContext/page";
 const OtpVerification = () => {
     const [response, setResponse] = useState([]);
     const [otp, setOtp] = useState();
+    const [ShowotpField, setShowotpField] = useState(false);
+    const [ShowPhoneField, setShowPhoneField] = useState(true);
+
     const [token, setToken] = useState();
     const [inputValue, setInputValue] = useState();
     const [isError, setIsError] = useState(false);
@@ -21,6 +24,8 @@ const OtpVerification = () => {
     const { deferredPrompt, isInstalled, handleInstallClick } = useContext(PwaContext);
 
     const sendOtp = async () => {
+        setShowotpField(true);
+        setShowPhoneField(false);
         const payload = {
             mobileNumber: inputValue,
         };
@@ -71,7 +76,7 @@ const OtpVerification = () => {
         <>
             <div className="h-screen flex flex-col">
                 {/* Top Half with Gradient */}
-                <div className="h-1/2  bg-gradient-to-l from-[#020065] to-[#0400CB] flex flex-col justify-center items-center">
+                <div className="h-1/2 my-10 bg-gradient-to-l from-[#020065] to-[#0400CB] flex flex-col justify-center items-center">
                     <img
                         className="w-1/2 sm:w-1/2 md:w-1/6 lg:w-1/4 h-auto sm:mt-20 md:mt-20"
                         src={imageLogo}
@@ -97,7 +102,13 @@ const OtpVerification = () => {
                                 Select preferred language
                             </p>
                             <FormControl component="fieldset" style={{ marginTop: '16px' }}>
-                                <RadioGroup row aria-label="language" name="language-group" defaultValue="English">
+                                <RadioGroup
+                                    row
+                                    aria-label="language"
+                                    name="language-group"
+                                    defaultValue="English"
+                                    className="gap-4 sm:gap-6" // Tailwind class for spacing
+                                >
                                     <FormControlLabel
                                         value="English"
                                         control={
@@ -130,35 +141,78 @@ const OtpVerification = () => {
                                     />
                                 </RadioGroup>
                             </FormControl>
+
                         </div>
 
                         {/* Login/Register Form */}
-                        <div
-                            className="text-start mt-5 mx-5 rounded-lg p-5 mt-5 lg:mt-10 "
-                            style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}
-                        >
-                            <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', fontSize: '14px' }}>
-                                Login/Register to continue
-                            </p>
-                            <div className="md:grid grid-cols-2 mt-3">
-                                <TextField
-                                    label="Phone Number"
-                                    variant="outlined"
-                                    size="medium"
-                                    fullWidth
-                                    value={inputValue}
-                                    onChange={handleInputChange}
-                                />
+                        {ShowPhoneField && (
+                            <div
+                                className="text-start mt-5 mx-5 rounded-lg p-5 mt-5 lg:mt-10 "
+                                style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}
+                            >
+                                <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', fontSize: '14px' }}>
+                                    Login/Register to continue
+                                </p>
+                                <div className="md:grid grid-cols-2 mt-3">
+                                    <TextField
+                                        label="Phone Number"
+                                        variant="outlined"
+                                        size="medium"
+                                        fullWidth
+                                        value={inputValue}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+                                <div className="mt-5">
+                                    <button
+                                        onClick={sendOtp}
+                                        className="md:w-1/2 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]"
+                                    >
+                                        Get Otp
+                                    </button>
+                                </div>
                             </div>
-                            <div className="mt-5">
-                                <button
-                                    onClick={sendOtp}
-                                    className="md:w-1/2 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]"
-                                >
-                                    Get Otp
-                                </button>
+                        )}
+
+                        {ShowotpField && (
+                            <div
+                                className="text-start mt-5 mx-5 rounded-lg p-5 mt-5 lg:mt-10 "
+                                style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}
+                            >
+                                <div className="flex justify justify-between">
+                                    <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', fontSize: '14px' }}>
+                                        Confirm Phone number
+                                    </p>
+
+                                    <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '500', textDecoration: "underline", fontSize: '14px' }}>
+                                        Resend OTP?
+                                    </p>
+                                </div>
+                                <div className="md:grid grid-cols-2 mt-3">
+                                    <TextField
+                                        label="Enter OTP"
+                                        variant="outlined"
+                                        size="medium"
+                                        fullWidth
+                                        type="password"
+                                    />
+                                </div>
+                                <p className="text-centerlg:text-start  text-sm mt-2" style={{ color: "#49454F" }}>
+                                    Enter the OTP shared thorough text message
+                                </p>
+                                <div className="mt-5">
+                                    <button
+                                        onClick={sendOtp}
+                                        className="md:w-1/2 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]"
+                                    >
+                                        Confirm
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        )}
+
+
+
                     </div>
 
                     {/* Image Section */}
