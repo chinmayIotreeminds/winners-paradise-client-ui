@@ -20,6 +20,7 @@ import { useForm, useWatch } from "react-hook-form";
 import logoImage from "../../assets/Images/algologo.png"
 import image2 from "../../assets/Images/robo 1 (1).png";
 import image3 from "../../assets/Images/arrow_circle_right (1).png";
+import { LogoutUser } from "../../network/Fcm/saveToken";
 
 const Catalogs = () => {
 
@@ -48,10 +49,16 @@ const Catalogs = () => {
         setisModalOpen(!isModalOpen);
     }
 
-    const yesLogout = () => {
+    const yesLogout = async () => {
+        // const res = await LogoutUser();
+        // console.log(res, "Response")
         localStorage.removeItem("customerDetails");
         localStorage.removeItem("tokenDetails");
         navigate("/")
+    }
+
+    const dontdeleteuser = () => {
+        setisModalOpen(!isModalOpen);
     }
 
     const onformSubmit = async () => {
@@ -117,7 +124,7 @@ const Catalogs = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:py-0 py-5 md:grid-cols-3 px-4 gap-0 md:gap-10 mt-20 md:mt-0 text-start">
-                        <div className="p-4 w-full  px-5 mb-3 rounded-lg bg-gradient-to-r from-[#0400CB] to-[#020065] flex justify-between" >
+                        <div className="p-4 w-full  px-5 mb-3 rounded-lg bg-gradient-to-r from-[#0400CB] to-[#020065] flex justify-between" onClick={() => navigate("/Kyc-status")} >
                             <div>
                                 <p className="text-start text-md font-bold text-white">
                                     Complete KYC
@@ -396,7 +403,7 @@ const Catalogs = () => {
                                             type="button"
                                             className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100  focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                             data-modal-hide="popup-modal"
-                                        // onClick={dontdeleteuser}
+                                            onClick={dontdeleteuser}
                                         >
                                             No, cancel
                                         </button>

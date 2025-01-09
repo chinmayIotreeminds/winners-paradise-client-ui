@@ -8,10 +8,6 @@ import { PwaProvider } from './context/PwaContext/page';
 import { LanguageProvider } from './context/Language/loginContext';
 import { InvestmentProvider } from './context/Investment/investmentContext';
 import { ConsentProvider } from './context/consent/consentProvider';
-import { requestNotificationPermission } from './firebase';
-
-
-requestNotificationPermission();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
