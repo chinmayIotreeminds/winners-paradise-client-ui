@@ -1,9 +1,32 @@
 import { axiosInstance, axiosInstanceWithoutToken } from "../../axiosInstance/AxiosConfig/page";
 
 
-const getAllPayouts = async (id) => {
+const getAllPayouts = async () => {
     try {
-        const res = await axiosInstanceWithoutToken.get(`payouts/list-my-payouts/${id}`);
+        const res = await axiosInstance.get(`payouts/list-my-payouts`);
+        const data = res;
+        return { data };
+    } catch (err) {
+        const errRes = (err && err.response) || "Network Error";
+        return { ...errRes };
+    }
+};
+
+
+const getAllPayoutsBYInvestmentId = async (id) => {
+    try {
+        const res = await axiosInstance.get(`payouts/list-my-payouts${id}`);
+        const data = res;
+        return { data };
+    } catch (err) {
+        const errRes = (err && err.response) || "Network Error";
+        return { ...errRes };
+    }
+};
+
+const getAllOverAllPayouts = async (id) => {
+    try {
+        const res = await axiosInstance.get(`payouts/list-my-payouts`);
         const data = res;
         return { data };
     } catch (err) {
@@ -14,7 +37,7 @@ const getAllPayouts = async (id) => {
 
 const getAllReferralPayouts = async (id) => {
     try {
-        const res = await axiosInstanceWithoutToken.get(`payouts/list-referral-payouts/${id}`);
+        const res = await axiosInstance.get(`payouts/list-referral-payouts/${id}`);
         const data = res;
         return { data };
     } catch (err) {
@@ -24,4 +47,4 @@ const getAllReferralPayouts = async (id) => {
 };
 
 
-export { getAllPayouts, getAllReferralPayouts };
+export { getAllPayouts, getAllReferralPayouts, getAllOverAllPayouts, getAllPayoutsBYInvestmentId };

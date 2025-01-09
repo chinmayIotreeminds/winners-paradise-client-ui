@@ -5,19 +5,31 @@ import reportWebVitals from './reportWebVitals';
 import { ToastProvider } from './context/Toast/toastProvider';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { PwaProvider } from './context/PwaContext/page';
+import { LanguageProvider } from './context/Language/loginContext';
+import { InvestmentProvider } from './context/Investment/investmentContext';
+import { ConsentProvider } from './context/consent/consentProvider';
+import { requestNotificationPermission } from './firebase';
+
+
+requestNotificationPermission();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <PwaProvider>
-      <ToastProvider>
-        <App></App>
-      </ToastProvider>
-    </PwaProvider>
+    <ConsentProvider>
+      <InvestmentProvider>
+        <PwaProvider>
+          <ToastProvider>
+            <LanguageProvider>
+              <App></App>
+            </LanguageProvider>
+          </ToastProvider>
+        </PwaProvider>
+      </InvestmentProvider>
+    </ConsentProvider>
   </React.StrictMode>
 );
-
 
 serviceWorkerRegistration.register();
 

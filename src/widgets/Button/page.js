@@ -4,7 +4,7 @@ const WidgetButton = ({ label, onClick }) => {
     return (
         <button
             onClick={onClick}
-            className="md:w-1/2 w-full p-3 rounded-full text-white bg-gradient-to-l from-[#020065] to-[#0400CB]"
+            className="p-4 mx-2 hover:shadow-xl bg-blue-100 text-blue-900 hover:bg-blue-700 hover:text-white rounded-xl transition duration-300 ease-in-out"
         >
             {label}
         </button>

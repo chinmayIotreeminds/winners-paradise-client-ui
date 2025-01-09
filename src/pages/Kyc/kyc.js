@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+import WidgetButton from "../../widgets/Button/page";
+import FormattedJsonViewer from "../../widgets/JsonView/page";
+import NavBar from "../../components/Navbar/page";
 import { creteCustomerKycRequest, getKycDetailsByCustomerId } from "../../network/KycVerification/page";
 import { useToast } from "../../context/Toast/toastHook";
-import image1 from "../../assets/Images/robo 1.png";
-import image2 from "../../assets/Images/container.png";
-import { TextField } from "@mui/material";
 
 const Kyc = () => {
 
@@ -69,56 +69,34 @@ const Kyc = () => {
 
     return (
         <>
-            <div className="flex flex-col">
-                <div className="bg-gradient-to-l from-[#020065] to-[#0400CB] justify-start items-start">
-                    <div className="text-start flex flex-row p-4">
-                        <img src={image2} className="w-8 h-8"></img>
-                        <h1 className="text-md text-start  text-white font-semibold my-1">Submit Personal details</h1>
-                    </div>
+            <NavBar />
+            <div className="mt-10">
+                <h1 className="text-3xl font-bold">Kyc Verification</h1> <br />
+
+                <WidgetButton
+                    label="Send Kyc Request"
+                    onClick={onformSubmit}
+                />
+                <WidgetButton
+                    label="Get Kyc Request"
+                    onClick={onformSubmit2}
+                />
+            </div>
+
+            {/* Response Container */}
+            <div className="response-container mt-10 p-5 border border-gray-300 rounded-md bg-gray-100">
+                <h3 className="text-lg font-bold mb-4">Response:</h3>
+                <div className={`p-4 rounded-md bg-white border border-gray-200 ${isError ? "text-red-600" : ""}`}>
+                    {response && Object.keys(response).length > 0 ? (
+                        isError ? (
+                            <span>{response}</span>
+                        ) : (
+                            <FormattedJsonViewer data={response} />
+                        )
+                    ) : (
+                        <span>No response yet</span>
+                    )}
                 </div>
-
-                {/* Bottom Half with White Background */}
-                <div className="h-full bg-white grid grid-cols-12 md:grid-cols-12 lg:pb-10">
-                    {/* Content Section */}
-                    <div className=" col-span-12 md:col-span-7 w-full order-1 md:order-2 ">
-
-                        <div className="grid grid-cols-2">
-
-                            <div
-                                className="text-start p-6 mt-5 mx-5 rounded-lg p-4 flex justify justify-between"
-                                style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}
-                            >
-                                <div>
-                                    <p style={{ color: 'rgb(0, 0, 0)', fontWeight: '500', fontSize: '14px' }}>
-                                        Upload
-                                    </p>
-                                    <h1 style={{ color: "#000094" }} className="font-bold my-3">AADHAAR CARD</h1>
-                                </div>
-                                <div>
-                                    <p style={{ color: 'rgb(0, 0, 0)', fontWeight: '500', fontSize: '14px' }}
-                                        className="text-end">
-                                        01
-                                    </p>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-
-
-
-
-                    </div>
-
-                    {/* Image Section */}
-                    <div className="p-0 col-span-12 md:col-span-5  mt-10 order-2 md:order-1 responive flex justify justify-center items-center">
-                        <img src={image1} alt="Image description" style={{ width: "550px" }} className="p-0 lg:p-5" />
-                    </div>
-                </div>
-
             </div>
         </>
     );
