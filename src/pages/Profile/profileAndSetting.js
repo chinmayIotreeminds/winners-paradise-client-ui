@@ -5,21 +5,29 @@ import backButton from "../../assets/Logos/backButton.png";
 import acrrowright from "../../assets/Images/arrow_circle_right.png";
 import image2 from "../../assets/Images/robo 1 (1).png";
 import logoutImage from "../../assets/Images/logoutItemLogo.png";
+import { Logoutuser } from "../../network/Authentication/page";
 
 const ProfileAndSettings = () => {
     const [isModalOpen, setisModalOpen] = useState(false);
     const [isPwaPromptAvailable, setIsPwaPromptAvailable] = useState(false);
     const [deferredPrompt, setDeferredPrompt] = useState(null);
+    const [isLoadingLogoutButton, setisLoadingLogoutButton] = useState(false)
+
     const navigate = useNavigate();
 
     const toggleModal = () => {
         setisModalOpen(!isModalOpen);
     };
 
-    const yesLogout = () => {
-        localStorage.removeItem("customerDetails");
-        localStorage.removeItem("tokenDetails");
-        navigate("/");
+    const yesLogout = async () => {
+        setisLoadingLogoutButton(true);
+        const resp = await Logoutuser();
+        if (resp.data.status === 200) {
+            localStorage.removeItem("customerDetails");
+            localStorage.removeItem("tokenDetails");
+            setisLoadingLogoutButton(false);
+            navigate("/");
+        }
     };
 
     const dontdeleteuser = () => {
@@ -27,15 +35,13 @@ const ProfileAndSettings = () => {
     };
 
     useEffect(() => {
-        // Check if the app is running as a PWA
         const isPwa = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
 
         if (isPwa) {
             console.log("App is already running as a PWA");
-            return; // Do not show the PWA installation prompt
+            return;
         }
 
-        // Listen for the `beforeinstallprompt` event
         window.addEventListener("beforeinstallprompt", (e) => {
             console.log("beforeinstallprompt event fired");
             e.preventDefault(); // Prevent the browser's default installation prompt
@@ -44,7 +50,6 @@ const ProfileAndSettings = () => {
         });
 
         return () => {
-            // Clean up the event listener
             window.removeEventListener("beforeinstallprompt", () => { });
         };
     }, []);
@@ -58,7 +63,7 @@ const ProfileAndSettings = () => {
                 } else {
                     console.log("User dismissed the PWA installation prompt");
                 }
-                setDeferredPrompt(null); // Clear the deferred prompt
+                setDeferredPrompt(null);
             });
         } else {
             console.log("PWA installation prompt is not available.");
@@ -258,7 +263,26 @@ const ProfileAndSettings = () => {
                                         data-modal-hide="popup-modal"
                                         onClick={yesLogout}
                                     >
-                                        Yes, I'm sure
+                                        {isLoadingLogoutButton ? (
+                                            <svg
+                                                aria-hidden="true"
+                                                className="w-5 h-5 text-gray-200 flex justify-center animate-spin dark:text-gray-600 fill-blue-600"
+                                                viewBox="0 0 100 101"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                                    fill="currentColor"
+                                                />
+                                                <path
+                                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                                    fill="currentFill"
+                                                />
+                                            </svg>
+                                        ) : (
+                                            "Yes, I'm sure"
+                                        )}
                                     </button>
                                     <button
                                         type="button"
@@ -280,6 +304,20 @@ const ProfileAndSettings = () => {
                         </div>
                     </div>
                 )}
+
+                <div className="fixed bottom-0 left-0 w-full sm:hidden">
+                    <div className="bg-white shadow-md">
+                        <img
+                            src={image2}
+                            alt="Image description"
+                            className="w-full h-full object-contain"
+                        />
+                    </div>
+                    <div onClick={toggleModal} className="absolute bottom-20 left-0 w-full flex justify-center items-center p-3">
+                        <p className="text-xl font-bold underline">Logout</p>
+                        <p><img src={logoutImage} className="w-6 h-auto mx-3"></img></p>
+                    </div>
+                </div>
 
             </div>
         </>

@@ -6,6 +6,7 @@ import { goBack } from "../../utils/Functions/goBackScreen";
 import { getCustomersNotifications } from "../../network/Notifications/page";
 
 const Notifications = () => {
+
     const [expandedCard, setExpandedCard] = useState(null); // Track expanded card
     const [isModalOpen, setisModalOpen] = useState(false);
     const navigate = useNavigate();
@@ -28,8 +29,7 @@ const Notifications = () => {
 
     const getAllNotifications = async (id) => {
         const resp = await getCustomersNotifications(id);
-        console.log(resp.data.data.payoutsNotifications.notifications, "resp")
-        setnotificationData(resp.data.data.payoutsNotifications.notifications)
+        setnotificationData(resp?.data?.data?.payoutsNotifications?.notifications)
     }
 
 
@@ -57,20 +57,20 @@ const Notifications = () => {
                             <img src={backButton} onClick={goBack} className="w-8 h-8" alt="Back" />
                             <p className="text-white font-semibold my-1">Notifications</p>
                         </div>
-                        <div className="text-white" onClick={toggleModal}>
+                        {/* <div className="text-white" onClick={toggleModal}>
                             Logout
-                        </div>
+                        </div> */}
                     </div>
                     <div className="flex justify-between">
                         <h1 className="text-start font-bold text-2xl p-4 text-black hidden md:block mt-10">
                             My Notifications
                         </h1>
-                        <p
+                        {/* <p
                             className="text-start font-bold text-xl p-4 text-black hidden md:block mt-10 cursor-pointer"
                             onClick={toggleModal}
                         >
                             Logout
-                        </p>
+                        </p> */}
                     </div>
 
                     <div className="text-start rounded-lg mt-5 p-4 grid md:grid-cols-3 grid-cols-1 gap-4">
