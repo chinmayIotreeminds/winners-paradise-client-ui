@@ -4,10 +4,12 @@ import imageLogo from "../../assets/Logos/logo1.png";
 import cataloglogo from "../../assets/Logos/sidebarLogos/catalog.png"
 import { getAllInvestments } from "../../network/Investments/page";
 import { useInvestment } from "../../context/Investment/investmentContext";
+import { verifyToken } from "../../network/Authentication/page";
 const Sidebar = () => {
 
     const [path, setpath] = useState("")
     const location = useLocation();
+    const navigate = useNavigate();
     const currentUrl = location.pathname;
     const [investments, setInvestments] = useState(false)
     const { isInvestmentCreated, setIsInvestmentCreated } = useInvestment();
@@ -24,9 +26,30 @@ const Sidebar = () => {
     }, []);
 
 
+    useEffect(() => {
+        const CallverifyToken = async () => {
+            if (localStorage.getItem("tokenDetails")) {
+
+                const payload = {
+                    token: localStorage.getItem("tokenDetails")
+                }
+
+                const res = await verifyToken(payload);
+
+                if (res?.data?.status != 200) {
+                    localStorage.removeItem("customerDetails");
+                    localStorage.removeItem("tokenDetails");
+                    navigate("/");
+                }
+            }
+        }
+        CallverifyToken()
+    }, [])
+
+
     const onformSubmit = async () => {
         const resp = await getAllInvestments();
-        if (resp.data.status === 201) {
+        if (resp.data.status === 200) {
             if (resp.data.data.data.length === 0) {
                 setInvestments(false)
                 setIsInvestmentCreated(false);
@@ -84,11 +107,11 @@ const Sidebar = () => {
 
                             {investments === true &&
                                 (
-                                    <li className="my-2">
+                                    <li className="mt-2">
                                         {currentUrl === "/payouts" ? (
                                             <Link
                                                 to="/payouts"
-                                                class="rounded-lg text-start flex items-start p-4 text-white  dark:text-white bg-gradient-to-l from-[#020065] to-[#0400CB] group"
+                                                class="rounded-lg text-start flex items-start p-4 my-5  text-white  dark:text-white bg-gradient-to-l from-[#020065] to-[#0400CB] group"
                                             >
                                                 <svg
                                                     class="flex-shrink-0 w-6 h-6 text-white transition duration-75 dark:text-gray-400"
@@ -104,7 +127,7 @@ const Sidebar = () => {
                                         ) : (
                                             <Link
                                                 to="/payouts"
-                                                class="rounded-lg hover:text-black text-start flex items-center p-4 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                                                class="rounded-lg hover:text-black text-start flex items-center p-4 my-5 text-gray-900  dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                                             >
                                                 <svg
                                                     class="text-start flex-shrink-0 w-6 h-6 text-gray-900 dark:text-white"
@@ -120,7 +143,6 @@ const Sidebar = () => {
                                         )}
                                     </li>
                                 )}
-
                             <li>
 
                                 {currentUrl === "/catalogs" ? (
