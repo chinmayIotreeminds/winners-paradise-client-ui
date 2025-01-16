@@ -52,7 +52,7 @@ const KycStatusPage = () => {
             const res = await creteCustomerKycRequest(payload);
             if (res?.data?.status === 200) {
                 setisLoading(false);
-                handleSuccessClick("Request Sent successfully");
+                handleSuccessClick(res.data.data.message);
             } else {
                 setisLoading(false);
                 seterrorMessage(res.data.error);
@@ -111,7 +111,6 @@ const KycStatusPage = () => {
                     "REJECTED": { status: "Rejected", backgroundColor: '#FFDA99', textColor: '#533400' },
                 };
 
-                // Update `data` based on received statuses
                 const dataToBeUpdate = [
                     {
                         id: 1,
@@ -157,7 +156,6 @@ const KycStatusPage = () => {
         // }
 
         if (item.title === "AADHAR CARD") {
-            console.log(KycRequestData, "KycRequestData")
             navigate("/kyc/aadhar-card-upload", { state: { KycRequestData } })
         }
 
@@ -244,6 +242,7 @@ const KycStatusPage = () => {
                                                     className="text-sm sm:text-md font-semibold"
                                                     style={{ color: item.textColor }}
                                                 >
+                                                    {console.log(item.status, "Statusasndkja`")}
                                                     {item.status === "Cleared" ||
                                                         item.status === "Review Pending" ||
                                                         item.status === "Rejected"
