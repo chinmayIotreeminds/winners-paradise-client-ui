@@ -44,6 +44,7 @@ const SignupPage = () => {
     const [ErrorMessage, setErrorMessage] = useState("")
     const [isLoading, setisLoading] = useState(false)
     const [isChecked, setIsChecked] = useState(false);
+    const [ImageError, setImageError] = useState("")
 
     const handleChange = (event) => {
         setIsChecked(event.target.checked);
@@ -60,8 +61,9 @@ const SignupPage = () => {
                 setImage(reader.result); // Set Base64 image
             };
             reader.readAsDataURL(file);
+            setImageError("")
         } else {
-            alert("Please select a valid image file (JPEG, JPG, PNG).");
+            setImageError("Please select a valid image file (JPEG, JPG, PNG).");
         }
     };
 
@@ -174,7 +176,7 @@ const SignupPage = () => {
 
                                 <div
                                     className={`border-dashed border-2 ${image ? "border-gray-300" : "border-gray-500"
-                                        } flex items-center justify-center w-40 h-40 sm:w-40 sm:h-40 rounded-full relative`}
+                                        } flex items-center justify-center rounded-full relative`}
                                 >
                                     {image ? (
                                         <>
@@ -184,7 +186,7 @@ const SignupPage = () => {
                                                 <img
                                                     src={image}
                                                     alt="Uploaded"
-                                                    className="object-cover w-full h-full rounded-full"
+                                                    className="object-cover w-full h-full rounded-full w-40 h-40 sm:w-40 sm:h-40 "
                                                 />
 
                                                 {/* Overlay */}
@@ -204,7 +206,7 @@ const SignupPage = () => {
                                     ) : (
                                         <label
                                             htmlFor="upload-image"
-                                            className="flex flex-col items-center justify-center cursor-pointer text-gray-400"
+                                            className="flex flex-col w-40 h-40 sm:w-40 sm:h-40  items-center justify-center cursor-pointer text-gray-400"
                                         >
                                             <AddAPhoto fontSize="large" />
                                             <span className="text-sm">Upload Image</span>
@@ -212,7 +214,7 @@ const SignupPage = () => {
                                                 id="upload-image"
                                                 type="file"
                                                 accept="image/jpeg,image/png,image/jpg"
-                                                className="hidden"
+                                                className="hidden w-40 h-40 sm:w-40 sm:h-40 "
                                                 onChange={handleImageUpload}
                                             />
                                         </label>
@@ -220,6 +222,9 @@ const SignupPage = () => {
                                 </div>
                             </div>
 
+                            {ImageError &&
+                                <p className="text-start text-red-400 text-sm my-3">{ImageError}</p>
+                            }
 
                             <TextField
                                 label={translations.registerModule.fullname_field[language]}
@@ -318,6 +323,14 @@ const SignupPage = () => {
                                             const selectedDate = new Date(value);
                                             return selectedDate <= today || 'Date of Birth cannot be in the future';
                                         },
+                                        minimumAge: (value) => {
+                                            const today = new Date();
+                                            const selectedDate = new Date(value);
+                                            const minDate = new Date();
+                                            minDate.setFullYear(today.getFullYear() - 18); // 18 years ago from today
+                                            return selectedDate <= minDate || 'You must be at least 18 years old';
+                                        },
+
                                     },
                                 })}
                                 error={!!errors.dateOfBirth}
@@ -334,10 +347,15 @@ const SignupPage = () => {
                                 fullWidth
                                 {...register('address', {
                                     required: 'Address is required',
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9\s,.-]+$/,
+                                        message: 'Only letters, numbers, spaces, commas, periods, and hyphens are allowed',
+                                    },
                                 })}
                                 error={!!errors.address}
                                 helperText={errors.address?.message}
                             />
+
 
                             <TextField
                                 label={translations.registerModule.statefield[language]}
@@ -419,22 +437,15 @@ const SignupPage = () => {
                                 fullWidth
                                 {...register('alternatePhoneNumber', {
                                     pattern: {
-                                        value: /^[0-9]{10}$/,
-                                        message: 'Please enter a valid 10-digit Alternative phone number',
-                                    },
-                                    pattern: {
                                         value: /^[9876][0-9]{9}$/,
                                         message: `Invalid Phone Number`,
                                     },
                                 })}
                                 error={!!errors.alternatePhoneNumber}
                                 helperText={errors.alternatePhoneNumber?.message}
-
                                 InputProps={{
                                     inputProps: {
-                                        style: {
-                                            MozAppearance: "textfield",
-                                        },
+                                        style: { MozAppearance: "textfield" }, // Removes spinner in Firefox
                                     },
                                     startAdornment: (
                                         <InputAdornment position="start">
@@ -442,12 +453,12 @@ const SignupPage = () => {
                                         </InputAdornment>
                                     ),
                                 }}
-
                                 onInput={(e) => {
                                     if (e.target.value.length > 10) {
-                                        e.target.value = e.target.value.slice(0, 10); // Truncate input to 12 digits
+                                        e.target.value = e.target.value.slice(0, 10); // Truncate input to 10 digits
                                     }
                                 }}
+                                onWheel={(e) => e.target.blur()} // Prevents scrolling from changing the number
                                 sx={{
                                     "& input[type=number]": {
                                         MozAppearance: "textfield", // Removes spinner in Firefox
@@ -457,8 +468,8 @@ const SignupPage = () => {
                                         margin: 0,
                                     },
                                 }}
-
                             />
+
 
                             <TextField
                                 label={translations.registerModule.Referralcodefield[language]}
