@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-// Create the context
 const ConsentContext = createContext();
 
-// Create the provider component
 export const ConsentProvider = ({ children }) => {
     const [isConsentAgreed, setIsConsentAgreed] = useState(false);
-
+    useEffect(() => {
+        console.log(isConsentAgreed)
+    }, [])
     return (
         <ConsentContext.Provider value={{ isConsentAgreed, setIsConsentAgreed }}>
             {children}
@@ -14,5 +14,4 @@ export const ConsentProvider = ({ children }) => {
     );
 };
 
-// Custom hook to use the context
 export const useConsent = () => useContext(ConsentContext);
