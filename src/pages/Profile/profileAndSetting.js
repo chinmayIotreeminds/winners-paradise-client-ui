@@ -7,12 +7,15 @@ import image2 from "../../assets/Images/robo 1 (1).png";
 import logoutImage from "../../assets/Images/logoutItemLogo.png";
 import { Logoutuser } from "../../network/Authentication/page";
 import { goBack } from "../../utils/Functions/goBackScreen";
+import translations from "../../utils/Json/translation.json"
+import { useLanguage } from "../../context/Language/loginContext";
 
 const ProfileAndSettings = () => {
     const [isModalOpen, setisModalOpen] = useState(false);
     const [isPwaPromptAvailable, setIsPwaPromptAvailable] = useState(false);
     const [deferredPrompt, setDeferredPrompt] = useState(null);
     const [isLoadingLogoutButton, setisLoadingLogoutButton] = useState(false)
+    const { language, setLanguage } = useLanguage();
 
     const navigate = useNavigate();
 
@@ -99,16 +102,14 @@ const ProfileAndSettings = () => {
                     <div className="h-[60px] sm:hidden bg-gradient-to-l from-[#020065] to-[#0400CB] flex flex-row justify-between p-4">
                         <div className="flex flex-row">
                             <img src={backButton} onClick={() => navigate(-1)} className="w-8 h-8" alt="Back" />
-                            <p className="text-white font-semibold my-1">Profile & Setting</p>
+                            <p className="text-white font-semibold my-1 ">{translations.ProfileAndSettings.heading[language]}</p>
                         </div>
                     </div>
 
                     <div className="flex justify-between hidden md:block">
                         <div className="flex flex-row mx-4 gap-4 mt-14">
-                            {/* <img onClick={goBack} src="https://cdn-icons-png.flaticon.com/512/3114/3114883.png" className="w-auto h-8" alt="Background" /> */}
-                            <h1 className="text-start font-bold text-2xl text-black hidden md:block">Profile & Settings</h1>
+                            <h1 className="text-start font-bold text-2xl text-black hidden md:block mx-5">{translations.ProfileAndSettings.heading[language]}</h1>
                         </div>
-                        {/* <p className="text-start font-bold text-xl p-4 text-black hidden md:block mt-10 cursor-pointer	" onClick={toggleModal}>Logout</p> */}
                     </div>
 
 
@@ -126,7 +127,7 @@ const ProfileAndSettings = () => {
                                             fontSize: "18px",
                                         }}
                                     >
-                                        Personal Details
+                                        {translations.ProfileAndSettings.heading1[language]}
                                     </p>
                                     <img src={acrrowright} className="w-auto h-8" alt="Arrow Icon"></img>
                                 </div>
@@ -146,7 +147,7 @@ const ProfileAndSettings = () => {
                                             fontSize: "18px",
                                         }}
                                     >
-                                        KYC
+                                        {translations.ProfileAndSettings.heading2[language]}
                                     </p>
                                     <img src={acrrowright} className="w-auto h-8" alt="Arrow Icon"></img>
                                 </div>
@@ -166,7 +167,7 @@ const ProfileAndSettings = () => {
                                             fontSize: "18px",
                                         }}
                                     >
-                                        Bank Account
+                                        {translations.ProfileAndSettings.heading3[language]}
                                     </p>
                                     <img src={acrrowright} className="w-auto h-8" alt="Arrow Icon"></img>
                                 </div>
@@ -186,7 +187,7 @@ const ProfileAndSettings = () => {
                                             fontSize: "18px",
                                         }}
                                     >
-                                        Language
+                                        {translations.ProfileAndSettings.heading4[language]}
                                     </p>
                                     <img src={acrrowright} className="w-auto h-8" alt="Arrow Icon"></img>
                                 </div>
@@ -208,7 +209,7 @@ const ProfileAndSettings = () => {
                                             fontSize: "18px",
                                         }}
                                     >
-                                        Install the App on your device
+                                        {translations.ProfileAndSettings.pwaMessage[language]}
                                     </p>
                                     <img src={acrrowright} className="w-auto h-8" alt="Arrow Icon"></img>
                                 </div>
@@ -228,7 +229,7 @@ const ProfileAndSettings = () => {
                                             fontSize: "18px",
                                         }}
                                     >
-                                        Logout
+                                        {translations.ProfileAndSettings.heading5[language]}
                                     </p>
                                     <img src={acrrowright} className="w-auto h-8" alt="Arrow Icon"></img>
                                 </div>
@@ -293,7 +294,7 @@ const ProfileAndSettings = () => {
                                         />
                                     </svg>
                                     <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                                        Are you sure you want to Logout ?
+                                        {translations.ProfileAndSettings.logoutMessage[language]}
                                     </h3>
                                     <button
                                         type="button"
@@ -319,7 +320,7 @@ const ProfileAndSettings = () => {
                                                 />
                                             </svg>
                                         ) : (
-                                            "Yes, I'm sure"
+                                            `${translations.ProfileAndSettings.agree[language]}`
                                         )}
                                     </button>
                                     <button
@@ -328,15 +329,8 @@ const ProfileAndSettings = () => {
                                         data-modal-hide="popup-modal"
                                         onClick={dontdeleteuser}
                                     >
-                                        No, cancel
+                                        {translations.ProfileAndSettings.cancel[language]}
                                     </button>
-                                    {/* <div className="text-start my-2">
-                                            {ErrormessageforDeleteModal && (
-                                                <span style={{ fontSize: '14px' }} className="text-red-400 text-xs text-satrt my-3">
-                                                    {ErrormessageforDeleteModal}
-                                                </span>
-                                            )}
-                                        </div> */}
                                 </div>
                             </div>
                         </div>

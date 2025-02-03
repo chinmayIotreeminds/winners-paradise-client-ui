@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import imageLogo from "../../assets/Logos/logo1.png";
 import image3 from "../../assets/Images/sideImage.png";
@@ -8,7 +8,10 @@ import { useForm } from 'react-hook-form';
 import { useToast } from "../../context/Toast/toastHook";
 import { goBack } from "../../utils/Functions/goBackScreen";
 import { addBankDetails, updateBankDetails, sendOtpForUpdate } from "../../network/BankDetails/page";
+import addNomineeImage from "../../assets/Images/addnominee.png"
 import { getCustomerById } from "../../network/Customer/page";
+import { useLanguage } from "../../context/Language/loginContext";
+import translations from "../../utils/Json/translation.json"
 
 const BankDetails = () => {
     const {
@@ -25,6 +28,7 @@ const BankDetails = () => {
         addToast(SuccessMessage, 'success');
     };
 
+    const { language, setLanguage } = useLanguage();
     const navigate = useNavigate();
     const [ErrorMessage, setErrorMessage] = useState("");
     const [isLoading, setisLoading] = useState(false);
@@ -134,14 +138,14 @@ const BankDetails = () => {
             <div className="h-screen flex flex-col">
                 <div className="h-[60px] fixed top-100 mb-4 z-10 w-full sm:hidden  bg-gradient-to-l from-[#020065] to-[#0400CB] flex flex-row p-3">
                     <img src={backButton} onClick={goBack} className="w-8 h-8" alt="Back" />
-                    <p className="text-white font-semibold my-1">{UpdateBankDetails && "Update"}Bank Account Details</p>
+                    <p className="text-white font-semibold my-1">{UpdateBankDetails && "Update"}{translations.BankAccount.heading[language]}</p>
                 </div>
 
                 <div className="h-full bg-white grid grid-cols-12 md:grid-cols-12 md:overflow-hidden md:p-0 sm:p-10">
                     <div className="col-span-12 md:col-span-6 w-full order-1 md:order-2 md:px-20 mt-10 overflow-auto">
                         <div className="flex flex-row">
                             <p style={{ color: '#020065' }} className="mx-5 hidden sm:block text-start font-semibold text-3xl">
-                                {UpdateBankDetails && "Update"} Bank Account Details
+                                {UpdateBankDetails && "Update"} {translations.BankAccount.heading[language]}
                             </p>
                         </div>
 
@@ -152,15 +156,15 @@ const BankDetails = () => {
                             {/* Bank Account Number */}
                             <TextField
                                 value={watchbankAccountNumber}
-                                label="Bank Account Number *"
+                                label={translations.BankAccount.bankAccountNumber[language]}
                                 variant="outlined"
                                 fullWidth
                                 type="number"
                                 {...register("bank_acc_no", {
-                                    required: "Bank Account Number is required",
+                                    required: translations.validations.bankDetails.bankAccount[language],
                                     pattern: {
                                         value: /^\d{9,18}$/,
-                                        message: "Enter a valid account number (9-18 digits)",
+                                        message: translations.validations.bankDetails.bankAccount1[language],
                                     },
                                 })}
                                 error={!!errors.bank_acc_no}
@@ -187,22 +191,22 @@ const BankDetails = () => {
                             {/* Bank Name */}
                             <TextField
                                 value={watchbankName}
-                                label="Bank Name *"
+                                label={translations.BankAccount.bankName[language]}
                                 variant="outlined"
                                 fullWidth
                                 {...register("bank_name", {
-                                    required: "Bank Name is required",
+                                    required: translations.validations.bankDetails.bankName[language],
                                     minLength: {
                                         value: 3,
-                                        message: "Bank name must be at least 3 characters",
+                                        message: translations.validations.bankDetails.bankName1[language],
                                     },
                                     maxLength: {
                                         value: 40,
-                                        message: "Bank name cannot exceed 40 characters",
+                                        message: translations.validations.bankDetails.bankName2[language],
                                     },
                                     pattern: {
                                         value: /^[A-Za-z\s]+$/,
-                                        message: "Only letters and spaces are allowed",
+                                        message: translations.validations.bankDetails.bankName3[language],
                                     },
                                 })}
                                 error={!!errors.bank_name}
@@ -218,14 +222,14 @@ const BankDetails = () => {
 
                             {/* IFSC Code */}
                             <TextField
-                                label="IFSC Code *"
+                                label={translations.BankAccount.ifscCode[language]}
                                 variant="outlined"
                                 fullWidth
                                 {...register("bank_Ifsc_code", {
-                                    required: "IFSC Code is required",
+                                    required: translations.validations.bankDetails.ifscCode[language],
                                     pattern: {
                                         value: /^[A-Z]{4}0[A-Z0-9]{6}$/,
-                                        message: "Enter a valid IFSC code (e.g., SBIN0001234)",
+                                        message: translations.validations.bankDetails.ifscCode1[language],
                                     },
                                 })}
                                 error={!!errors.bank_Ifsc_code}
@@ -237,22 +241,22 @@ const BankDetails = () => {
 
                             {/* Bank Branch Name */}
                             <TextField
-                                label="Bank Branch Name *"
+                                label={translations.BankAccount.bankBranchName[language]}
                                 variant="outlined"
                                 fullWidth
                                 {...register("bank_branch_name", {
-                                    required: "Bank Branch Name is required",
+                                    required: translations.validations.bankDetails.bankBranch[language],
                                     minLength: {
                                         value: 3,
-                                        message: "Branch name must be at least 3 characters",
+                                        message: translations.validations.bankDetails.bankBranch1[language],
                                     },
                                     maxLength: {
                                         value: 40,
-                                        message: "Branch name cannot exceed 40 characters",
+                                        message: translations.validations.bankDetails.bankBranch2[language],
                                     },
                                     pattern: {
                                         value: /^[A-Za-z\s]+$/,
-                                        message: "Only letters and spaces are allowed",
+                                        message: translations.validations.bankDetails.bankBranch3[language],
                                     },
                                 })}
                                 error={!!errors.bank_branch_name}
@@ -270,7 +274,7 @@ const BankDetails = () => {
                             {showOtpField && (
                                 <>
                                     <TextField
-                                        label="Enter OTP *"
+                                        label={translations.BankAccount.enterOtp[language]}
                                         variant="outlined"
                                         fullWidth
                                         value={otp}
@@ -283,6 +287,70 @@ const BankDetails = () => {
 
                             )}
 
+                            {/* Submit Button */}
+
+
+                            {/* <div className="text-start rounded-lg grid gap-4">
+                                <div className="p-4 md:p-6 rounded-lg w-full " style={{ backgroundColor: 'rgba(245, 245, 245, 1)' }}>
+                                    <div className="flex justify-between items-center">
+                                        <p style={{ color: 'rgba(0, 0, 148, 1)' }} className="font-bold text-lg">Nominee account</p>
+                                        <Link to="/profile-and-settings/edit-nominee">
+                                            <button aria-label="Edit" className="p-2 ">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="black"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    className="w-6 h-6"
+                                                >
+                                                    <path d="M12 20h9"></path>
+                                                    <path d="M16.5 3.5l4 4L7 21H3v-4L16.5 3.5z"></path>
+                                                </svg>
+                                            </button>
+                                        </Link>
+                                    </div>
+
+                                    <div className="flex justify-between items-center mt-2">
+                                        <div>
+                                            <p className="text-sm text-gray-800">Account Holder Name</p>
+                                            <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '700', fontSize: '18px' }}>
+                                                ajsdk
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div className="my-3">
+                                        <p className="text-sm text-gray-800">Account Number</p>
+                                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '700', fontSize: '18px' }}>12839</p>
+                                    </div>
+
+                                    <div className="my-3">
+                                        <p className="text-sm text-gray-800">IFSC Code</p>
+                                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '700', fontSize: '18px' }}>ajsd</p>
+                                    </div>
+
+                                    <div className="my-3">
+                                        <p className="text-sm text-gray-800">Bank Name & Branch</p>
+                                        <p style={{ color: 'rgba(0, 0, 148, 1)', fontWeight: '700', fontSize: '18px' }}>
+                                            asdjk
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div> */}
+
+                            <Link to="/profile-and-settings/add-nominee" className="mb-10 md:mb-0">
+                                <div className="mt-5 p-5 w-full rounded-lg border border-black border-dotted  border-2 text-start flex justify-between">
+                                    <p className="text-lg font-bold" style={{ color: 'rgba(0, 0, 148, 1)' }}>{translations.Nominee.heading[language]}</p>
+                                    <img className="w-6 h-6" src={addNomineeImage}></img>
+                                </div>
+                            </Link>
 
                             {/* Submit Button */}
                             <div>
@@ -313,7 +381,7 @@ const BankDetails = () => {
                                                         />
                                                     </svg>
                                                 ) : (
-                                                    UpdateBankDetails ? (showOtpField ? "Update" : "Send OTP") : "Save & Continue"
+                                                    UpdateBankDetails ? (showOtpField ? `${translations.BankAccount.updateButton[language]}` : `${translations.BankAccount.sendOtpButton[language]}`) : `${translations.BankAccount.saveButton[language]}`
                                                 )}
                                             </button>
                                         </div>
@@ -354,7 +422,7 @@ const BankDetails = () => {
                                                         />
                                                     </svg>
                                                 ) : (
-                                                    UpdateBankDetails ? (showOtpField ? "Update" : "Send OTP") : "Save & Continue"
+                                                    UpdateBankDetails ? (showOtpField ? `${translations.BankAccount.updateButton[language]}` : `${translations.BankAccount.sendOtpButton[language]}`) : `${translations.BankAccount.saveButton[language]}`
                                                 )}
                                             </button>
                                         </div>
